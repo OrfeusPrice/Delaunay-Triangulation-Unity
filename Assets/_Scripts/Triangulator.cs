@@ -1,162 +1,192 @@
 ﻿using UnityEngine;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 
-struct Triangle {
-	public int p1;
-	public int p2;
-	public int p3;
-	public Triangle(int point1, int point2, int point3) {
-		p1 = point1;
-		p2 = point2;
-		p3 = point3;
-	}
+struct Triangle
+{
+    public int P1 { get; }
+    public int P2 { get; }
+    public int P3 { get; }
+
+    public Triangle(int point1, int point2, int point3)
+    {
+        P1 = point1;
+        P2 = point2;
+        P3 = point3;
+    }
 }
 
-class Edge {
-	public int p1;
-	public int p2;
-	public Edge(int point1, int point2) {
-		p1 = point1;
-		p2 = point2;
-	}
-	public Edge(): this(0, 0) {}
-	public bool Equals(Edge other) {
-		return ((this.p1 == other.p2) && (this.p2 == other.p1)) || ((this.p1 == other.p1) && (this.p2 == other.p2));
-	}
+struct Edge
+{
+    public int P1 { get; }
+    public int P2 { get; }
+
+    public Edge(int point1, int point2)
+    {
+        P1 = point1;
+        P2 = point2;
+    }
+
+    public bool Equals(Edge other) => (P1 == other.P2 && P2 == other.P1) || (P1 == other.P1 && P2 == other.P2);
 }
 
+public class Triangulator
+{
+    private bool IsPointInCircle(Vector2 point, Vector2 point1, Vector2 point2, Vector2 point3)
+    {
+        if (Mathf.Abs(point1.y - point2.y) < float.Epsilon && Mathf.Abs(point2.y - point3.y) < float.Epsilon)
+        {
+            return false;
+        }
 
-public class Triangulator {
-	
-	bool TriangulatePolygonSubFunc_InCircle(Vector2 p, Vector2 p1, Vector2 p2, Vector2 p3) {
-		if (Mathf.Abs(p1.y - p2.y) < float.Epsilon && Mathf.Abs(p2.y - p3.y) < float.Epsilon) {
-			return false;
-		}
-		float m1, m2, mx1, mx2, my1, my2, xc, yc;
-		if (Mathf.Abs(p2.y - p1.y) < float.Epsilon) {
-			m2 = -(p3.x - p2.x) / (p3.y - p2.y);
-			mx2 = (p2.x + p3.x) * 0.5f;
-			my2 = (p2.y + p3.y) * 0.5f;
-			xc = (p2.x + p1.x) * 0.5f;
-			yc = m2 * (xc - mx2) + my2;
-		} else if (Mathf.Abs(p3.y - p2.y) < float.Epsilon) {
-			m1 = -(p2.x - p1.x) / (p2.y - p1.y);
-			mx1 = (p1.x + p2.x) * 0.5f;
-			my1 = (p1.y + p2.y) * 0.5f;
-			xc = (p3.x + p2.x) * 0.5f;
-			yc = m1 * (xc - mx1) + my1;
-		} else {
-			m1 = -(p2.x - p1.x) / (p2.y - p1.y);
-			m2 = -(p3.x - p2.x) / (p3.y - p2.y);
-			mx1 = (p1.x + p2.x) * 0.5f;
-			mx2 = (p2.x + p3.x) * 0.5f;
-			my1 = (p1.y + p2.y) * 0.5f;
-			my2 = (p2.y + p3.y) * 0.5f;
-			xc = (m1 * mx1 - m2 * mx2 + my2 - my1) / (m1 - m2);
-			yc = m1 * (xc - mx1) + my1;
-		}
-		float dx = p2.x - xc;
-		float dy = p2.y - yc;
-		float rsqr = dx * dx + dy * dy;
-		dx = p.x - xc;
-		dy = p.y - yc;
-		double drsqr = dx * dx + dy * dy;
-		return (drsqr <= rsqr);
-	}
-	
+        float m1, m2, mx1, mx2, my1, my2, xc, yc;
+        if (Mathf.Abs(point2.y - point1.y) < float.Epsilon)
+        {
+            m2 = -(point3.x - point2.x) / (point3.y - point2.y);
+            mx2 = (point2.x + point3.x) / 2;
+            my2 = (point2.y + point3.y) / 2;
+            xc = (point2.x + point1.x) / 2;
+            yc = m2 * (xc - mx2) + my2;
+        }
+        else if (Mathf.Abs(point3.y - point2.y) < float.Epsilon)
+        {
+            m1 = -(point2.x - point1.x) / (point2.y - point1.y);
+            mx1 = (point1.x + point2.x) / 2;
+            my1 = (point1.y + point2.y) / 2;
+            xc = (point3.x + point2.x) / 2;
+            yc = m1 * (xc - mx1) + my1;
+        }
+        else
+        {
+            m1 = -(point2.x - point1.x) / (point2.y - point1.y);
+            m2 = -(point3.x - point2.x) / (point3.y - point2.y);
+            mx1 = (point1.x + point2.x) / 2;
+            mx2 = (point2.x + point3.x) / 2;
+            my1 = (point1.y + point2.y) / 2;
+            my2 = (point2.y + point3.y) / 2;
+            xc = (m1 * mx1 - m2 * mx2 + my2 - my1) / (m1 - m2);
+            yc = m1 * (xc - mx1) + my1;
+        }
 
-	public Mesh CreateInfluencePolygon(Vector2[] XZofVertices) {
-		Vector3[] Vertices = new Vector3[XZofVertices.Length];
-		for (int ii1 = 0; ii1 < XZofVertices.Length; ii1++) {
-			Vertices[ii1] = new Vector3(XZofVertices[ii1].x, 0, XZofVertices[ii1].y);
-		}
-		Mesh mesh = new Mesh();
-		mesh.vertices = Vertices;
-		mesh.uv = XZofVertices;
-		mesh.triangles = TriangulatePolygon(XZofVertices);
-		mesh.RecalculateNormals();
+        float dx = point2.x - xc;
+        float dy = point2.y - yc;
+        float rsqr = dx * dx + dy * dy;
+        dx = point.x - xc;
+        dy = point.y - yc;
+        double drsqr = dx * dx + dy * dy;
+        return (drsqr <= rsqr);
+    }
 
-		return mesh;
-	}
-	
-	
-	int[] TriangulatePolygon(Vector2[] XZofVertices) {
-		int VertexCount = XZofVertices.Length;
-		float xmin = XZofVertices[0].x;
-		float ymin = XZofVertices[0].y;
-		float xmax = xmin;
-		float ymax = ymin;
-		for (int ii1 = 1; ii1 < VertexCount; ii1++) {
-			if (XZofVertices[ii1].x < xmin) {
-				xmin = XZofVertices[ii1].x;
-			} else if (XZofVertices[ii1].x > xmax) {
-				xmax = XZofVertices[ii1].x;
-			}
-			if (XZofVertices[ii1].y < ymin) {
-				ymin = XZofVertices[ii1].y;
-			} else if (XZofVertices[ii1].y > ymax) {
-				ymax = XZofVertices[ii1].y;
-			}
-		}
-		float dx = xmax - xmin;
-		float dy = ymax - ymin;
-		float dmax = (dx > dy) ? dx : dy;
-		float xmid = (xmax + xmin) * 0.5f;
-		float ymid = (ymax + ymin) * 0.5f;
-		Vector2[] ExpandedXZ = new Vector2[3 + VertexCount];
-		for (int ii1 = 0; ii1 < VertexCount; ii1++) {
-			ExpandedXZ[ii1] = XZofVertices[ii1];
-		}
-		ExpandedXZ[VertexCount] = new Vector2((xmid - 2 * dmax), (ymid - dmax));
-		ExpandedXZ[VertexCount + 1] = new Vector2(xmid, (ymid + 2 * dmax));
-		ExpandedXZ[VertexCount + 2] = new Vector2((xmid + 2 * dmax), (ymid - dmax));
-		List < Triangle > TriangleList = new List < Triangle > ();
-		TriangleList.Add(new Triangle(VertexCount, VertexCount + 1, VertexCount + 2));
-		for (int ii1 = 0; ii1 < VertexCount; ii1++) {
-			List < Edge > Edges = new List < Edge > ();
-			for (int ii2 = 0; ii2 < TriangleList.Count; ii2++) {
-				if (TriangulatePolygonSubFunc_InCircle(ExpandedXZ[ii1], ExpandedXZ[TriangleList[ii2].p1], ExpandedXZ[TriangleList[ii2].p2], ExpandedXZ[TriangleList[ii2].p3])) {
-					Edges.Add(new Edge(TriangleList[ii2].p1, TriangleList[ii2].p2));
-					Edges.Add(new Edge(TriangleList[ii2].p2, TriangleList[ii2].p3));
-					Edges.Add(new Edge(TriangleList[ii2].p3, TriangleList[ii2].p1));
-					TriangleList.RemoveAt(ii2);
-					ii2--;
-				}
-			}
-			if (ii1 >= VertexCount) {
-				continue;
-			}
-			for (int ii2 = Edges.Count - 2; ii2 >= 0; ii2--) {
-				for (int ii3 = Edges.Count - 1; ii3 >= ii2 + 1; ii3--) {
-					if (Edges[ii2].Equals(Edges[ii3])) {
-						Edges.RemoveAt(ii3);
-						Edges.RemoveAt(ii2);
-						ii3--;
-						continue;
-					}
-				}
-			}
-			for (int ii2 = 0; ii2 < Edges.Count; ii2++) {
-				TriangleList.Add(new Triangle(Edges[ii2].p1, Edges[ii2].p2, ii1));
-			}
-			Edges.Clear();
-			Edges = null;
-		}
-		for (int ii1 = TriangleList.Count - 1; ii1 >= 0; ii1--) {
-			if (TriangleList[ii1].p1 >= VertexCount || TriangleList[ii1].p2 >= VertexCount || TriangleList[ii1].p3 >= VertexCount) {
-				TriangleList.RemoveAt(ii1);
-			}
-		}
-		TriangleList.TrimExcess();
-		int[] Triangles = new int[3 * TriangleList.Count];
-		for (int ii1 = 0; ii1 < TriangleList.Count; ii1++) {
-			Triangles[3 * ii1] = TriangleList[ii1].p1;
-			Triangles[3 * ii1 + 1] = TriangleList[ii1].p2;
-			Triangles[3 * ii1 + 2] = TriangleList[ii1].p3;
-		}
-		return Triangles;
-	}
-	
+    public Mesh CreatePolygon(Vector2[] xyOfVertices)
+    {
+        Vector3[] vertices = new Vector3[xyOfVertices.Length];
+        for (int i = 0; i < xyOfVertices.Length; i++)
+        {
+            vertices[i] = new Vector3(xyOfVertices[i].x, 0, xyOfVertices[i].y);
+        }
+
+        Mesh mesh = new Mesh();
+        mesh.vertices = vertices;
+        mesh.uv = xyOfVertices;
+        mesh.triangles = TriangulatePolygon(xyOfVertices);
+        mesh.RecalculateNormals();
+
+        return mesh;
+    }
+
+    private int[] TriangulatePolygon(Vector2[] xyOfVertices)
+    {
+        int vertexCount = xyOfVertices.Length;
+
+        float xmin = xyOfVertices[0].x;
+        float ymin = xyOfVertices[0].y;
+        float xmax = xmin;
+        float ymax = ymin;
+        for (int i = 1; i < vertexCount; i++)
+        {
+            xmin = Mathf.Min(xmin, xyOfVertices[i].x);
+            xmax = Mathf.Max(xmax, xyOfVertices[i].x);
+            ymin = Mathf.Min(ymin, xyOfVertices[i].y);
+            ymax = Mathf.Max(ymax, xyOfVertices[i].y);
+        }
+
+        float dx = xmax - xmin;
+        float dy = ymax - ymin;
+        float dmax = Mathf.Max(dx, dy);
+        float xmid = (xmax + xmin) * 0.5f;
+        float ymid = (ymax + ymin) * 0.5f;
+        Vector2[] expandedXY = new Vector2[3 + vertexCount];
+        for (int i = 0; i < vertexCount; i++)
+        {
+            expandedXY[i] = xyOfVertices[i];
+        }
+
+        expandedXY[vertexCount] = new Vector2(xmid - 2 * dmax, ymid - dmax);
+        expandedXY[vertexCount + 1] = new Vector2(xmid, ymid + 2 * dmax);
+        expandedXY[vertexCount + 2] = new Vector2(xmid + 2 * dmax, ymid - dmax);
+
+        List<Triangle> triangleList = new List<Triangle>()
+            {new Triangle(vertexCount, vertexCount + 1, vertexCount + 2)};
+
+        for (int i = 0; i < vertexCount; i++)
+        {
+            List<Edge> edges = new List<Edge>();
+            for (int j = 0; j < triangleList.Count; j++)
+            {
+                if (IsPointInCircle(expandedXY[i], expandedXY[triangleList[j].P1], expandedXY[triangleList[j].P2],
+                    expandedXY[triangleList[j].P3]))
+                {
+                    edges.Add(new Edge(triangleList[j].P1, triangleList[j].P2));
+                    edges.Add(new Edge(triangleList[j].P2, triangleList[j].P3));
+                    edges.Add(new Edge(triangleList[j].P3, triangleList[j].P1));
+
+                    triangleList.RemoveAt(j);
+                    j--;
+                }
+            }
+
+            if (i >= vertexCount)
+            {
+                continue;
+            }
+
+            for (int j = edges.Count - 2; j >= 0; j--)
+            {
+                for (int k = edges.Count - 1; k >= j + 1; k--)
+                {
+                    if (edges[j].Equals(edges[k]))
+                    {
+                        edges.RemoveAt(k);
+                        edges.RemoveAt(j);
+                        k--;
+                    }
+                }
+            }
+
+            for (int j = 0; j < edges.Count; j++)
+            {
+                triangleList.Add(new Triangle(edges[j].P1, edges[j].P2, i));
+            }
+
+            edges.Clear();
+        }
+
+        for (int i = triangleList.Count - 1; i >= 0; i--)
+        {
+            if (triangleList[i].P1 >= vertexCount || triangleList[i].P2 >= vertexCount ||
+                triangleList[i].P3 >= vertexCount)
+            {
+                triangleList.RemoveAt(i);
+            }
+        }
+
+        int[] triangles = new int[3 * triangleList.Count];
+        for (int i = 0; i < triangleList.Count; i++)
+        {
+            triangles[3 * i] = triangleList[i].P1;
+            triangles[3 * i + 1] = triangleList[i].P2;
+            triangles[3 * i + 2] = triangleList[i].P3;
+        }
+
+        return triangles;
+    }
 }

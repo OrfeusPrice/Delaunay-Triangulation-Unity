@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cfef82fc-f23f-4403-a748-f59c2117f12f" name="Default Changelist" comment="" />
+    <list default="true" id="cfef82fc-f23f-4403-a748-f59c2117f12f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Delaunay Triangulation/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Delaunay Triangulation/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Delaunay Triangulation/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Delaunay Triangulation/.idea/indexLayout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Delaunay Triangulation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Delaunay Triangulation/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Materials/DelaunayFix.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Materials/DelaunayFix.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Materials/Mesh.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Materials/Mesh.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scenes/SampleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Scripts/CreateMesh.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scripts/CreateMesh.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Scripts/Triangulator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scripts/Triangulator.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../../../../HW/КГ/Labs/UnityDelaunay2D-master/Assets/scripts/DelaunayFix.cs" root0="SKIP_HIGHLIGHTING" />
@@ -24,8 +37,9 @@
         <option value="$PROJECT_DIR$/Assets/_Materials/DoubleSide.shader" />
         <option value="$PROJECT_DIR$/Assets/_Scripts/CameraController.cs" />
         <option value="$PROJECT_DIR$/Assets/_Scripts/MakeLineFromMesh.cs" />
-        <option value="$PROJECT_DIR$/Assets/_Scripts/Triangulator.cs" />
         <option value="$PROJECT_DIR$/Assets/_Scripts/CreateMesh.cs" />
+        <option value="$PROJECT_DIR$/Assets/_Materials/DelaunayFix.cs" />
+        <option value="$PROJECT_DIR$/Assets/_Scripts/Triangulator.cs" />
       </list>
     </option>
   </component>
@@ -72,6 +86,7 @@
       <workItem from="1729601752780" duration="9001000" />
       <workItem from="1729677861429" duration="6897000" />
       <workItem from="1729871370913" duration="6769000" />
+      <workItem from="1730228990125" duration="10504000" />
     </task>
     <servers />
   </component>
