@@ -1,7 +1,4 @@
-﻿// based on UnityでありもののMeshをワイヤフレームで描画する
-// http://izmiz.hateblo.jp/entry/2014/02/27/224651
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class MakeLineFromMesh : MonoBehaviour {
@@ -20,14 +17,12 @@ public class MakeLineFromMesh : MonoBehaviour {
 	public void updateMesh() {
 		if(meshFilter.mesh != null) {
 			MeshTopology topo = meshFilter.mesh.GetTopology(0);
-			Debug.Log(topo); 
 
 			if( topo == MeshTopology.Triangles ){
 				triangles = meshFilter.mesh.triangles;
 				meshFilter.mesh.SetIndices(MakeIndices(), MeshTopology.Lines, 0);
 
 				topo = meshFilter.mesh.GetTopology(0);
-				Debug.Log(topo); 
 			}
 		}
 	}

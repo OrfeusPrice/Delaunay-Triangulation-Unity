@@ -81,7 +81,7 @@ public class Triangulator
         Vector3[] vertices = new Vector3[xyOfVertices.Length];
         for (int i = 0; i < xyOfVertices.Length; i++)
         {
-            vertices[i] = new Vector3(xyOfVertices[i].x, 0, xyOfVertices[i].y);
+            vertices[i] = new Vector3(xyOfVertices[i].x,  xyOfVertices[i].y, 0);
         }
 
         Mesh mesh = new Mesh();
@@ -112,8 +112,8 @@ public class Triangulator
         float dx = xmax - xmin;
         float dy = ymax - ymin;
         float dmax = Mathf.Max(dx, dy);
-        float xmid = (xmax + xmin) * 0.5f;
-        float ymid = (ymax + ymin) * 0.5f;
+        float xmid = (xmax + xmin) / 2;
+        float ymid = (ymax + ymin) / 2;
         Vector2[] expandedXY = new Vector2[3 + vertexCount];
         for (int i = 0; i < vertexCount; i++)
         {
