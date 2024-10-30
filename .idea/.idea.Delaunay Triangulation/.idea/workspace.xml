@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cfef82fc-f23f-4403-a748-f59c2117f12f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Delaunay Triangulation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Delaunay Triangulation/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Scripts/MakeLineFromMesh.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scripts/MakeLineFromMesh.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Scripts/Triangulator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scripts/Triangulator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +78,7 @@
       <workItem from="1729601752780" duration="9001000" />
       <workItem from="1729677861429" duration="6897000" />
       <workItem from="1729871370913" duration="6769000" />
-      <workItem from="1730228990125" duration="14082000" />
+      <workItem from="1730228990125" duration="15707000" />
     </task>
     <servers />
   </component>

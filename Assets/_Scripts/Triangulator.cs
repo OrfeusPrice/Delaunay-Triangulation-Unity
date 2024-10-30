@@ -81,7 +81,7 @@ public class Triangulator
         Vector3[] vertices = new Vector3[xyOfVertices.Length];
         for (int i = 0; i < xyOfVertices.Length; i++)
         {
-            vertices[i] = new Vector3(xyOfVertices[i].x,  xyOfVertices[i].y, 0);
+            vertices[i] = new Vector3(xyOfVertices[i].x, xyOfVertices[i].y, 0);
         }
 
         Mesh mesh = new Mesh();
@@ -142,11 +142,6 @@ public class Triangulator
                     triangleList.RemoveAt(j);
                     j--;
                 }
-            }
-
-            if (i >= vertexCount)
-            {
-                continue;
             }
 
             for (int j = edges.Count - 2; j >= 0; j--)
